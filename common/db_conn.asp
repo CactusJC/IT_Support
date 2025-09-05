@@ -5,24 +5,19 @@ Option Explicit
 
 Dim conn
 
-' --- IMPORTANT ---
-' Replace "C:\path\to\your\database\support.mdb" with the actual path to your MDB file.
-' The web server user (e.g., IUSR) needs read/write permissions on this file and its directory.
-Dim dbPath
-dbPath = Server.MapPath("/database/support.mdb") ' Assuming the database is in a 'database' folder in the web root.
-
-' OLEDB Connection string for MS Access
-Dim connStr
-connStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" & dbPath & ";"
-
+' --- Verbinding maken met de database ---
+' Het pad hieronder is gebaseerd op de input van de gebruiker.
 Set conn = Server.CreateObject("ADODB.Connection")
 
 On Error Resume Next
-conn.Open connStr
+' Gebruik het directe UNC pad zoals door de gebruiker aangegeven. Let op: het dollarteken ($) in het pad kan soms problemen geven.
+conn.Open "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\\metro.applic.mjeltechnologies.nl\pg11_inetmb_kalibratie$\Klantensite\ITSupport\database\support.mdb;"
+
 If Err.Number <> 0 Then
     Response.Write "<h1>Database Connection Error</h1>"
-    Response.Write "<p>Could not connect to the database. Please check the path and permissions.</p>"
-    Response.Write "<p>Error: " & Err.Description & "</p>"
+    Response.Write "<p>Could not connect to the database. This is likely a **permissions issue** on the network share or an **incorrect path**.</p>"
+    Response.Write "<p>Please ensure the IIS Application Pool user has read/write access to the network folder and the database file.</p>"
+    Response.Write "<p><b>Error Description:</b> " & Err.Description & "</p>"
     Response.End
 End If
 On Error GoTo 0
