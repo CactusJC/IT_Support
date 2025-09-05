@@ -13,7 +13,7 @@ ticketID = Request.QueryString("ticketID")
             <p>Uw aanvraag is succesvol ontvangen. Er kon echter geen ticketnummer worden opgehaald. Neem contact op met de IT-afdeling voor assistentie.</p>
         <% End If %>
     </div>
-    <a href="../index.asp" class="btn">Terug naar de hoofdpagina</a>
+    <a href="index.asp" class="btn">Terug naar de hoofdpagina</a>
 </div>
 
 <!-- #include file="common/footer.asp" -->
